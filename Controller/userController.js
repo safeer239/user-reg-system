@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const User = require('../Model/userModel')
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const createUser = async (req, res) => {
   try {
@@ -21,7 +22,7 @@ const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Save User
-    const user = new User({
+    const user = await User.create({
       name,
       age,
       dateOfBirth,
@@ -30,9 +31,20 @@ const createUser = async (req, res) => {
       about,
     });
 
-    await user.save();
-    res.json(user)
-    res.status(201).json({ message: "User created successfully!" });
+    if(user){
+      res.status(201).json({
+        _id:user._id,
+      name:user.name,
+      age:user.age,
+      dateOfBirth:user.dateOfBirth,
+      password: hashedPassword,
+      gender:user.gender,
+      about:user.about,
+      token : jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+      })
+      // res.status(201).json({ message: "User created successfully!" });
+    }
+    
   } catch (error) {
     res.status(500).json({ message: "Failed to create user" });
   }
@@ -40,8 +52,8 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const {id}=req.params
-    const user = await User.findById(id).select("-password");
+   
+    const user = await User.findById(req.userId).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json(user);
