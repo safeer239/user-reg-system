@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 
-app.use("/api/auth/",userRoute)
+app.use("/api/auth",userRoute)
 
 const PORT =process.env.PORT || 8080
 app.listen(PORT,()=>{
