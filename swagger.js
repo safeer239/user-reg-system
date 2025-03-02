@@ -12,7 +12,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:8080/",
+        url: "https://user-reg-system.onrender.com/",
         description: "Local Server",
       },
     ],
@@ -24,7 +24,7 @@ const swaggerSpec = swaggerJSDoc(options);
 
 const swaggerDocs = (app) => {
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-  console.log("📄 Swagger Docs available at http://localhost:8080/api-docs");
+  console.log("📄 Swagger Docs available at https://user-reg-system.onrender.com/api-docs");
 };
 
 module.exports = swaggerDocs;
