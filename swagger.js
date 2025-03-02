@@ -13,6 +13,10 @@ const options = {
     servers: [
       {
         url: "https://user-reg-system.onrender.com/",
+        description: "Live Server",
+      },
+      {
+        url: "http://localhost:8080/api-docs/",
         description: "Local Server",
       },
     ],
